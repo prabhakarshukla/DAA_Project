@@ -1,41 +1,39 @@
 
 #include "structures.h"
 
-int solveBacktracking(int subjectIndex,
-                      TimetableEntry timetable[]) {
-
-    // All subjects successfully assigned
-    if (subjectIndex == subjectCount) {
+static int solveBacktracking(
+    int subjectIndex,
+    TimetableEntry timetable[]
+)
+{
+    if (subjectIndex == subjectCount)
+    {
         return 1;
     }
 
-    // Try every examination slot
-    for (int j = 0; j < slotCount; j++) {
-
-        // Try every available room
-        for (int k = 0; k < roomCount; k++) {
-
+    for (int j = 0; j < slotCount; j++)
+    {
+        
+        for (int k = 0; k < roomCount; k++)
+        {
             if (isValidAssignment(
-                subjectIndex, j, k, timetable)) {
-
-                // Make assignment
+                    subjectIndex, j, k, timetable))
+            {
+                
                 timetable[subjectIndex].subjectIndex =
                     subjectIndex;
 
                 timetable[subjectIndex].slotIndex = j;
-
                 timetable[subjectIndex].roomIndex = k;
-
                 timetable[subjectIndex].assigned = 1;
 
-                // Recursively schedule next subject
+                
                 if (solveBacktracking(
-                    subjectIndex + 1, timetable)) {
-
+                        subjectIndex + 1, timetable))
+                {
                     return 1;
                 }
 
-                // Undo assignment (Backtracking)
                 timetable[subjectIndex].subjectIndex = -1;
                 timetable[subjectIndex].slotIndex = -1;
                 timetable[subjectIndex].roomIndex = -1;
@@ -44,11 +42,10 @@ int solveBacktracking(int subjectIndex,
         }
     }
 
-    // No valid assignment found
     return 0;
 }
 
-int generateBacktracking(TimetableEntry timetable[]) {
-
+int generateBacktracking(TimetableEntry timetable[])
+{
     return solveBacktracking(0, timetable);
 }

@@ -5,35 +5,43 @@
 void displayTimetable(
     TimetableEntry timetable[],
     int success
-) {
+)
+{
+    printf("\n");
+    printf("===============================================================\n");
+    printf("                    EXAM TIMETABLE\n");
+    printf("===============================================================\n");
 
-    if (!success) {
-        printf("\nScheduling Status: FAILED\n");
-        printf("No valid timetable could be generated.\n");
+    if (!success)
+    {
+        printf("Scheduling failed! No complete valid timetable found.\n");
         return;
     }
 
-    printf("\n");
-    printf("--------------- EXAM TIMETABLE ---------------\n");
-
-    printf("%-22s %-14s %-12s %-10s\n",
-           "Subject", "Date", "Time", "Room");
+    printf("%-22s %-14s %-12s %-10s %-10s\n",
+           "Subject", "Date", "Time", "Room", "Students");
 
     printf("---------------------------------------------------------------\n");
 
-    for (int i = 0; i < subjectCount; i++) {
+    for (int i = 0; i < subjectCount; i++)
+    {
+        int s = timetable[i].subjectIndex;
+        int t = timetable[i].slotIndex;
+        int r = timetable[i].roomIndex;
+        int f = subjects[s].facultyId;
 
-        int slot = timetable[i].slotIndex;
-        int room = timetable[i].roomIndex;
+        printf("%-22s %-14s %-12s %-10s %-10d\n",
+               subjects[s].name,
+               slots[t].date,
+               slots[t].time,
+               rooms[r].name,
+               subjects[s].studentCount);
 
-        printf("%-22s %-14s %-12s %-10s\n",
-               subjects[i].name,
-               slots[slot].date,
-               slots[slot].time,
-               rooms[room].name);
+        printf("  Faculty: %-18s Room Capacity: %d\n",
+               faculty[f].name,
+               rooms[r].capacity);
     }
 
     printf("---------------------------------------------------------------\n");
-
     printf("Scheduling Status: SUCCESSFUL\n");
 }

@@ -6,44 +6,47 @@
 #define MAX_ROOMS 10
 #define MAX_FACULTY 20
 #define MAX_SLOTS 30
+#define MAX_STUDENTS 1000000
 
-// Subject Information
-typedef struct {
+typedef struct
+{
     int id;
     char name[50];
     int facultyId;
+    int studentCount;
 } Subject;
 
-// Room Information
-typedef struct {
+typedef struct
+{
     int id;
     char name[20];
+    int capacity;
     int available[MAX_SLOTS];
 } Room;
 
-// Faculty Information
-typedef struct {
+typedef struct
+{
     int id;
     char name[50];
     int available[MAX_SLOTS];
 } Faculty;
 
-// Examination Slot Information
-typedef struct {
+typedef struct
+{
     int id;
     char date[20];
     char time[20];
 } ExamSlot;
 
-// Timetable Assignment
-typedef struct {
+typedef struct
+{
     int subjectIndex;
     int slotIndex;
     int roomIndex;
     int assigned;
 } TimetableEntry;
 
-// Shared data
+// Global data
 extern Subject subjects[MAX_SUBJECTS];
 extern Room rooms[MAX_ROOMS];
 extern Faculty faculty[MAX_FACULTY];
@@ -55,7 +58,7 @@ extern int facultyCount;
 extern int slotCount;
 
 // Function declarations
-void loadSampleData(void);
+int getUserInput(void);
 
 void initializeTimetable(TimetableEntry timetable[]);
 
@@ -76,4 +79,3 @@ void displayTimetable(
 );
 
 #endif
-

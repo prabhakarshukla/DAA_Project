@@ -3,54 +3,47 @@
 #include <time.h>
 #include "structures.h"
 
-int main() {
-
+int main(void)
+{
     TimetableEntry greedyTimetable[MAX_SUBJECTS];
-
     TimetableEntry backtrackingTimetable[MAX_SUBJECTS];
 
     clock_t start, end;
 
-    double greedyTime, backtrackingTime;
+    double greedyTime;
+    double backtrackingTime;
 
-    // Display project heading
-    printf("========================================\n");
+    printf("\n========================================\n");
     printf("  COLLEGE EXAM TIMETABLE GENERATION\n");
     printf("========================================\n");
 
-    // Load sample data
-    loadSampleData();
-
-    // Display subjects
-    printf("\nAvailable Subjects:\n");
-
-    for (int i = 0; i < subjectCount; i++) {
-        printf("%d. %s\n", i + 1, subjects[i].name);
+    if (!getUserInput())
+    {
+        printf("Unable to collect input.\n");
+        return 1;
     }
 
-    // GREEDY ALGORITHM
     initializeTimetable(greedyTimetable);
 
     printf("\nGenerating Timetable using Greedy...\n");
 
     start = clock();
 
-    int greedySuccess = generateGreedy(greedyTimetable);
+    int greedyStatus = generateGreedy(greedyTimetable);
 
     end = clock();
 
     greedyTime = (double)(end - start) / CLOCKS_PER_SEC;
 
-    displayTimetable(greedyTimetable, greedySuccess);
+    displayTimetable(greedyTimetable, greedyStatus);
 
-    // BACKTRACKING ALGORITHM
     initializeTimetable(backtrackingTimetable);
 
     printf("\nGenerating Timetable using Backtracking...\n");
 
     start = clock();
 
-    int backtrackingSuccess =
+    int backtrackingStatus =
         generateBacktracking(backtrackingTimetable);
 
     end = clock();
@@ -58,14 +51,10 @@ int main() {
     backtrackingTime =
         (double)(end - start) / CLOCKS_PER_SEC;
 
-    displayTimetable(
-        backtrackingTimetable,
-        backtrackingSuccess
-    );
+    displayTimetable(backtrackingTimetable, backtrackingStatus);
 
-    // PERFORMANCE COMPARISON
     printf("\n========================================\n");
-    printf("       ALGORITHM PERFORMANCE\n");
+    printf("          ALGORITHM PERFORMANCE\n");
     printf("========================================\n");
 
     printf("Greedy Execution Time       : %.8f seconds\n",
@@ -75,10 +64,10 @@ int main() {
            backtrackingTime);
 
     printf("\nGreedy Status       : %s\n",
-           greedySuccess ? "SUCCESSFUL" : "FAILED");
+           greedyStatus ? "SUCCESSFUL" : "FAILED");
 
     printf("Backtracking Status : %s\n",
-           backtrackingSuccess ? "SUCCESSFUL" : "FAILED");
+           backtrackingStatus ? "SUCCESSFUL" : "FAILED");
 
     printf("========================================\n");
 

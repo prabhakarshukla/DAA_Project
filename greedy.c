@@ -1,21 +1,18 @@
 
 #include "structures.h"
 
-int generateGreedy(TimetableEntry timetable[]) {
-
-    // Process subjects one by one
-    for (int i = 0; i < subjectCount; i++) {
-
+int generateGreedy(TimetableEntry timetable[])
+{
+    for (int i = 0; i < subjectCount; i++)
+    {
         int assigned = 0;
 
-        // Try available examination slots
-        for (int j = 0; j < slotCount; j++) {
-
-            // Try available rooms
-            for (int k = 0; k < roomCount; k++) {
-
-                if (isValidAssignment(i, j, k, timetable)) {
-
+        for (int j = 0; j < slotCount; j++)
+        {
+            for (int k = 0; k < roomCount; k++)
+            {
+                if (isValidAssignment(i, j, k, timetable))
+                {
                     timetable[i].subjectIndex = i;
                     timetable[i].slotIndex = j;
                     timetable[i].roomIndex = k;
@@ -26,13 +23,14 @@ int generateGreedy(TimetableEntry timetable[]) {
                 }
             }
 
-            if (assigned) {
+            if (assigned)
+            {
                 break;
             }
         }
 
-        // No valid slot found
-        if (!assigned) {
+        if (!assigned)
+        {
             return 0;
         }
     }
