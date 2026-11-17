@@ -28,6 +28,10 @@ static int readNumber(const char *message, int min, int max)
 
         if (fgets(line, sizeof(line), stdin) == NULL)
         {
+            if (feof(stdin))
+            {
+                return min;
+            }
             printf("Input error. Try again.\n");
             clearerr(stdin);
             continue;
@@ -62,15 +66,22 @@ static void readText(const char *message, char text[], int size)
 
         if (fgets(text, size, stdin) == NULL)
         {
+            if (feof(stdin))
+            {
+                text[0] = '\0';
+                return;
+            }
             printf("Input error. Try again.\n");
             clearerr(stdin);
             continue;
         }
 
-        text[strcspn(text, "\n")] = '\0';
-
-        // Handle text longer than the buffer
-        if (strchr(text, '\n') == NULL && !feof(stdin))
+        char *newline = strchr(text, '\n');
+        if (newline != NULL)
+        {
+            *newline = '\0';
+        }
+        else if (!feof(stdin))
         {
             int ch;
             while ((ch = getchar()) != '\n' && ch != EOF);
