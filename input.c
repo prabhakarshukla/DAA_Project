@@ -37,8 +37,21 @@ static int readNumber(const char *message, int min, int max)
             continue;
         }
 
+        char *p = line;
+        while (*p == ' ' || *p == '\t')
+        {
+            p++;
+        }
+
+        if (*p == '\n' || *p == '\r' || *p == '\0')
+        {
+            printf("Invalid input! Enter a number between %d and %d.\n",
+                   min, max);
+            continue;
+        }
+
         errno = 0;
-        value = strtol(line, &end, 10);
+        value = strtol(p, &end, 10);
 
         while (*end == ' ' || *end == '\t' ||
                *end == '\n' || *end == '\r')
@@ -46,7 +59,7 @@ static int readNumber(const char *message, int min, int max)
             end++;
         }
 
-        if (end == line || *end != '\0' ||
+        if (end == p || *end != '\0' ||
             errno == ERANGE || value < min || value > max)
         {
             printf("Invalid input! Enter a number between %d and %d.\n",
@@ -80,12 +93,18 @@ static void readText(const char *message, char text[], int size)
         if (newline != NULL)
         {
             *newline = '\0';
+            if (newline > text && *(newline - 1) == '\r')
+            {
+                *(newline - 1) = '\0';
+            }
         }
         else if (!feof(stdin))
         {
             int ch;
             while ((ch = getchar()) != '\n' && ch != EOF);
         }
+
+        text[strcspn(text, "\r")] = '\0';
 
         if (text[0] == '\0')
         {
